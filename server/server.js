@@ -126,8 +126,40 @@ app.post('/api/saveResults', [
   validateInputs
 ], (req, res) => {
   const { imieKlienta, nazwiskoKlienta, moduly, liczbaModulow, falowniki, magazyny, konstrukcje, koordynacja, montaz, rodzajKlienta, narzut, mocPV, pojemnoscME, sumaNetto, sumaVat, sumaBrutto, cenaBazowa, sumaNettoKlienta, sumaVatKlienta, sumaBruttoKlienta, zarobek } = req.body;
+
+  const modulyModel = moduly ? JSON.parse(moduly).Model : null;
+  const falownikiModel = JSON.parse(falowniki).Model;
+  const magazynyModel = magazyny ? JSON.parse(magazyny).Model : null;
+  const konstrukcjeRodzaj = konstrukcje ? JSON.parse(konstrukcje).Rodzaj : null;
+  const koordynacjaFirma = JSON.parse(koordynacja).Firma;
+  const montazFirma = JSON.parse(montaz).Firma;
+
   const sql = 'INSERT INTO Oferty (ImieKlienta, NazwiskoKlienta, Moduly, LiczbaModulow, Falownik, Magazyn, Konstrukcja, Koordynacja, Montaz, RodzajKlienta, Narzut, MocPV, PojemnoscME, SumaNetto, SumaVAT, SumaBrutto, CenaBazowa, SumaNettoKlienta, SumaVatKlienta, SumaBruttoKlienta, Zarobek) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-  const values = [imieKlienta, nazwiskoKlienta, JSON.parse(moduly)?.Model || null, liczbaModulow, JSON.parse(falowniki).Model, JSON.parse(magazyny)?.Model || null, JSON.parse(konstrukcje)?.Rodzaj || null, JSON.parse(koordynacja).Firma, JSON.parse(montaz).Firma, rodzajKlienta, narzut, mocPV, pojemnoscME, sumaNetto, sumaVat, sumaBrutto, cenaBazowa, sumaNettoKlienta, sumaVatKlienta, sumaBruttoKlienta, zarobek];
+
+  const values = [
+    imieKlienta,
+    nazwiskoKlienta,
+    modulyModel,
+    liczbaModulow,
+    falownikiModel,
+    magazynyModel,
+    konstrukcjeRodzaj,
+    koordynacjaFirma,
+    montazFirma,
+    rodzajKlienta,
+    narzut,
+    mocPV,
+    pojemnoscME,
+    sumaNetto,
+    sumaVat,
+    sumaBrutto,
+    cenaBazowa,
+    sumaNettoKlienta,
+    sumaVatKlienta,
+    sumaBruttoKlienta,
+    zarobek
+  ];
+
   pool.query(sql, values, (err, result) => {
     if (err) {
       console.error('Error saving results:', err);
@@ -137,6 +169,7 @@ app.post('/api/saveResults', [
     res.status(200).send('Results saved successfully');
   });
 });
+
 
 app.get('/api/data', async (req, res) => {
   try {
