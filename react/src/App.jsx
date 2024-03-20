@@ -274,7 +274,6 @@ function App() {
       ) : (
         <div className="calculator">
           <LoginForm onLogin={handleLogin} />
-              <RegisterForm setIsLoggedIn={setIsLoggedIn} setIsPermissionAccess={setIsPermissionAccess} />
         </div>
       )}
     </div>
