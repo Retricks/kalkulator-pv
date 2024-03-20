@@ -247,7 +247,7 @@ function App() {
       sumaVatKlienta: sumaVatKlientaH.toFixed(2),
       sumaBruttoKlienta: sumaBruttoKlientaH.toFixed(2),
       zarobek: zarobekH.toFixed(2),
-      mocPV: mocPVH.toFixed(2),
+      mocPV: moduly ? mocPVH.toFixed(2) : '',
       pojemnoscME: magazyny ? JSON.parse(magazyny).Pojemnosc : ''
     }));
   };
