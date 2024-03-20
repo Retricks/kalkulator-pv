@@ -166,7 +166,7 @@ function App() {
     narzut,
     rodzajKlienta,
   }) => {
-    if (!falowniki || !konstrukcje || !koordynacja || !montaz || !rodzajKlienta) {
+    if (!falowniki || !koordynacja || !montaz || !rodzajKlienta) {
       setSelectedOptions(prevState => ({
         ...prevState,
         sumaNetto: '',
