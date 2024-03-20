@@ -19,16 +19,6 @@ const pool = mysql.createPool({
   connectionLimit: 10,
   queueLimit: 0
 });
-const testDatabaseConnection = async () => {
-  try {
-    const connection = await pool.getConnection();
-    const [rows] = await connection.query('SELECT * FROM users');
-    connection.release();
-    console.log('Rekordy z tabeli users:', rows);
-  } catch (error) {
-    console.error('Błąd pobierania rekordów z tabeli users:', error.message);
-  }
-};
 
 const sessionStore = new MySQLStore({
   expiration: 86400000,
@@ -138,7 +128,7 @@ app.post('/api/saveResults', [
   const { imieKlienta, nazwiskoKlienta, moduly, liczbaModulow, falowniki, magazyny, konstrukcje, koordynacja, montaz, rodzajKlienta, narzut, mocPV, pojemnoscME, sumaNetto, sumaVat, sumaBrutto, cenaBazowa, sumaNettoKlienta, sumaVatKlienta, sumaBruttoKlienta, zarobek } = req.body;
 
   const sql = 'INSERT INTO Oferty (ImieKlienta, NazwiskoKlienta, Moduly, LiczbaModulow, Falownik, Magazyn, Konstrukcja, Koordynacja, Montaz, RodzajKlienta, Narzut, MocPV, PojemnoscME, SumaNetto, SumaVAT, SumaBrutto, CenaBazowa, SumaNettoKlienta, SumaVatKlienta, SumaBruttoKlienta, Zarobek) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-  const values = [imieKlienta, nazwiskoKlienta, JSON.parse(moduly)?.Model || null, liczbaModulow, JSON.parse(falowniki).Model, JSON.parse(magazyny)?.Model || null, JSON.parse(konstrukcje)?.Rodzaj || null, JSON.parse(koordynacja).Firma, JSON.parse(montaz).Firma, rodzajKlienta, narzut, mocPV, pojemnoscME, sumaNetto, sumaVat, sumaBrutto, cenaBazowa, sumaNettoKlienta, sumaVatKlienta, sumaBruttoKlienta, zarobek];
+  const values = [imieKlienta, nazwiskoKlienta, JSON.parse(moduly)?.Model || null, liczbaModulow || null, JSON.parse(falowniki).Model, JSON.parse(magazyny)?.Model || null, JSON.parse(konstrukcje)?.Rodzaj || null, JSON.parse(koordynacja).Firma, JSON.parse(montaz).Firma, rodzajKlienta, narzut, mocPV, pojemnoscME, sumaNetto, sumaVat, sumaBrutto, cenaBazowa, sumaNettoKlienta, sumaVatKlienta, sumaBruttoKlienta, zarobek];
 
   pool.query(sql, values, (err, result) => {
     if (err) {
@@ -183,7 +173,6 @@ async function getData(tableName) {
   return rows;
 }
 
-app.listen(PORT, async () => {
+app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
-  await testDatabaseConnection();
 });
