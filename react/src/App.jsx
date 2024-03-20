@@ -10,7 +10,7 @@ import RegisterForm from './RegisterForm';
 import LogoutButton from './LogoutButton';
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(true)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [isPermissionAccess, setIsPermissionAccess] = useState(false)
   const [isOpenNav, setIsOpenNav] = useState(false)
   const [username, setUsername] = useState('')
