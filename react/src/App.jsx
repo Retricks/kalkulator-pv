@@ -181,7 +181,6 @@ function App() {
       }));
     }
     
-    const cenaModulu = parseFloat(JSON.parse(moduly).Cena);
     const cenaFalownika = parseFloat(JSON.parse(falowniki).Cena);
     const cenaKonstrukcji = parseFloat(JSON.parse(konstrukcje).Cena);
     const cenaMontazu = parseFloat(JSON.parse(montaz).Cena);
@@ -198,6 +197,7 @@ function App() {
     let sumaNettoH;
     let sumaBruttoH;
     if(moduly){
+      const cenaModulu = parseFloat(JSON.parse(moduly).Cena);
       sumaNettoH = cenaModulu * iloscModulow +
                        cenaFalownika +
                        cenaKonstrukcji * iloscModulow +
