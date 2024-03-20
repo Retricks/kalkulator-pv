@@ -22,11 +22,11 @@ const pool = mysql.createPool({
 const testDatabaseConnection = async () => {
   try {
     const connection = await pool.getConnection();
-    const [rows] = await connection.query('SELECT * FROM Moduly');
+    const [rows] = await connection.query('SELECT * FROM users');
     connection.release();
-    console.log('Rekordy z tabeli Moduly:', rows);
+    console.log('Rekordy z tabeli users:', rows);
   } catch (error) {
-    console.error('Błąd pobierania rekordów z tabeli Moduly:', error.message);
+    console.error('Błąd pobierania rekordów z tabeli users:', error.message);
   }
 };
 
