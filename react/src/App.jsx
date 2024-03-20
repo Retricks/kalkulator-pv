@@ -179,59 +179,55 @@ function App() {
         mocPV: '',
         pojemnoscME: ''
       }));
+      return;
     }
-    
+  
     const cenaFalownika = parseFloat(JSON.parse(falowniki).Cena);
     const cenaMontazu = parseFloat(JSON.parse(montaz).Cena);
     const cenaKoordynacji = parseFloat(JSON.parse(koordynacja).Cena);
     const wysokoscNarzutu = parseFloat(narzut);
     const vat = rodzajKlienta === 'Klient biznesowy' ? 0.23 : 0.08;
     const narzutBazowy = isPermissionAccess ? 1 : 1.25;
-
-    const iloscModulow = parseInt(liczbaModulow);
-    let mocPVH;
+  
     let sumaNettoH;
     let sumaBruttoH;
-    if(moduly){
-      const cenaKonstrukcji = parseFloat(JSON.parse(konstrukcje).Cena);
+    if (moduly) {
       const cenaModulu = parseFloat(JSON.parse(moduly).Cena);
-      mocPVH = (JSON.parse(moduly).Moc * iloscModulow / 1000);
+      const cenaKonstrukcji = parseFloat(JSON.parse(konstrukcje).Cena);
+      const iloscModulow = parseInt(liczbaModulow);
+      const mocPVH = (JSON.parse(moduly).Moc * iloscModulow / 1000);
+  
       sumaNettoH = cenaModulu * iloscModulow +
-                       cenaFalownika +
-                       cenaKonstrukcji * iloscModulow +
-                       cenaMontazu * mocPVH +
-                       cenaKoordynacji * mocPVH;
-
-    sumaBruttoH = cenaModulu * iloscModulow * 1.23 +
-                      cenaFalownika * 1.23 +
-                      cenaKonstrukcji * iloscModulow * 1.23 +
-                      cenaMontazu * mocPVH * (1 + vat) +
-                      cenaKoordynacji * mocPVH * 1.23;
-
-    if (magazyny) {
+                   cenaFalownika +
+                   cenaKonstrukcji * iloscModulow +
+                   cenaMontazu * mocPVH +
+                   cenaKoordynacji * mocPVH;
+  
+      sumaBruttoH = cenaModulu * iloscModulow * 1.23 +
+                    cenaFalownika * 1.23 +
+                    cenaKonstrukcji * iloscModulow * 1.23 +
+                    cenaMontazu * mocPVH * (1 + vat) +
+                    cenaKoordynacji * mocPVH * 1.23;
+  
+      if (magazyny) {
+        const cenaMagazynu = parseFloat(JSON.parse(magazyny).Cena);
+        sumaNettoH += cenaMagazynu;
+        sumaBruttoH += cenaMagazynu * 1.23;
+      }
+    } else {
       const cenaMagazynu = parseFloat(JSON.parse(magazyny).Cena);
-      sumaNettoH += cenaMagazynu;
-      sumaBruttoH += cenaMagazynu * 1.23;
+      sumaNettoH = cenaMagazynu + cenaFalownika + 1000 + 1000;
+      sumaBruttoH = cenaMagazynu * 1.23 + cenaFalownika * 1.23 + 1000 * (1 + vat) + 1000 * 1.23;
     }
-  }
-  else{      
-    const cenaMagazynu = parseFloat(JSON.parse(magazyny).Cena);
-    sumaNettoH = cenaMagazynu + cenaFalownika +
-    1000 + 1000
-
-    sumaBruttoH = cenaMagazynu * 1.23 + cenaFalownika * 1.23 +
-      1000 * (1 + vat) +
-      1000 * 1.23;
-
-  }
-    const cenaBazowaH = sumaBruttoH*narzutBazowy
+  
+    const cenaBazowaH = sumaBruttoH * narzutBazowy;
     const sumaVatH = cenaBazowaH - sumaNettoH;
     const sumaNettoKlientaH = cenaBazowaH + wysokoscNarzutu;
     const sumaBruttoKlientaH = sumaNettoKlientaH * (1 + vat);
     const sumaVatKlientaH = sumaBruttoKlientaH - sumaNettoKlientaH;
     const wartoscPodatku = sumaNettoKlientaH * 0.055;
     const zarobekH = (sumaBruttoKlientaH - cenaBazowaH) - wartoscPodatku - sumaVatKlientaH;
-
+  
     setSelectedOptions(prevState => ({
       ...prevState,
       sumaNetto: sumaNettoH.toFixed(2),
@@ -242,10 +238,11 @@ function App() {
       sumaVatKlienta: sumaVatKlientaH.toFixed(2),
       sumaBruttoKlienta: sumaBruttoKlientaH.toFixed(2),
       zarobek: zarobekH.toFixed(2),
-      mocPV: moduly ? mocPVH.toFixed(2) : '',
+      mocPV: moduly ? (JSON.parse(moduly).Moc * parseInt(liczbaModulow) / 1000).toFixed(2) : '',
       pojemnoscME: magazyny ? JSON.parse(magazyny).Pojemnosc : ''
     }));
   };
+  
 
   return (
 <div className="app">
