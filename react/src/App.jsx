@@ -190,13 +190,11 @@ function App() {
     const narzutBazowy = isPermissionAccess ? 1 : 1.25;
 
     const iloscModulow = parseInt(liczbaModulow);
-      let mocPVH;
-    if (moduly){
-      mocPVH = (JSON.parse(moduly).Moc * iloscModulow / 1000);
-    }
+    let mocPVH;
     let sumaNettoH;
     let sumaBruttoH;
     if(moduly){
+      mocPVH = (JSON.parse(moduly).Moc * iloscModulow / 1000);
       const cenaModulu = parseFloat(JSON.parse(moduly).Cena);
       sumaNettoH = cenaModulu * iloscModulow +
                        cenaFalownika +
@@ -219,14 +217,11 @@ function App() {
   else{      
     const cenaMagazynu = parseFloat(JSON.parse(magazyny).Cena);
     sumaNettoH = cenaMagazynu + cenaFalownika +
-    cenaKonstrukcji * iloscModulow +
-    cenaMontazu * mocPVH +
-    cenaKoordynacji * mocPVH;
+    1000 + 1000
 
     sumaBruttoH = cenaMagazynu * 1.23 + cenaFalownika * 1.23 +
-      cenaKonstrukcji * iloscModulow * 1.23 +
-      cenaMontazu * mocPVH * (1 + vat) +
-      cenaKoordynacji * mocPVH * 1.23;
+      1000 * (1 + vat) +
+      1000 * 1.23;
 
   }
     const cenaBazowaH = sumaBruttoH*narzutBazowy
