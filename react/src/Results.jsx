@@ -9,7 +9,15 @@ function Results({ message, selectedOptions, expandedResults, toggleResults, han
         
         <> + ME  {selectedOptions.pojemnoscME} kWh</>}</h1>
         :
+        <>
+        {selectedOptions.pojemnoscME ?
+        
+            <> ME  {selectedOptions.pojemnoscME} kWh</>
+        :        
         <h1 className="title">Kalkulator</h1>
+
+        }
+        </>
         }
         <div className="result">
             <div className="section">
