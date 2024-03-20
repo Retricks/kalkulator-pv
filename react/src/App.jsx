@@ -46,11 +46,10 @@ function App() {
 
   const handleLogin = async (formData) => {
     try {
-      const response = await axios.post('http://localhost:8080/api/login', formData);
+      const response = await axios.post('https://kalkulator-pv-server.onrender.com/api/login', formData);
       const { isLoggedIn, username, isPermissionAccess } = response.data;
       setIsLoggedIn(isLoggedIn);
       setUsername(username);
-      console.log(data)
       setIsPermissionAccess(isPermissionAccess);
       // Zapisz informacje o zalogowanym użytkowniku w pamięci lokalnej
       localStorage.setItem('user', JSON.stringify({ isLoggedIn, username, isPermissionAccess }));
@@ -61,7 +60,7 @@ function App() {
 
   const handleLogout = async () => {
     try {
-      await axios.post('http://localhost:8080/api/logout');
+      await axios.post('https://kalkulator-pv-server.onrender.com/api/logout');
       setIsLoggedIn(false);
       setUsername('');
       setIsPermissionAccess('');
@@ -75,7 +74,7 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/api/data');
+        const response = await axios.get('https://kalkulator-pv-server.onrender.com/api/data');
         setData(response.data);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -87,7 +86,7 @@ function App() {
   
   const handleSaveResults = async () => {
     try {
-      const response = await axios.post('http://localhost:8080/api/saveResults', selectedOptions);
+      const response = await axios.post('https://kalkulator-pv-server.onrender.com/api/saveResults', selectedOptions);
       setMessage(`Dodano klienta ${response.data.imieKlienta} ${response.data.nazwiskoKlienta}`)
       // Możesz dodać obsługę sukcesu, np. wyświetlenie komunikatu o sukcesie
     } catch (error) {

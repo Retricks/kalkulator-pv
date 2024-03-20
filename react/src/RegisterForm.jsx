@@ -16,7 +16,7 @@ const RegisterForm = ({ setIsLoggedIn }) => {
     }
 
     try {
-      const response = await axios.post('http://localhost:8080/api/register', {
+      const response = await axios.post('https://kalkulator-pv-server.onrender.com/api/register', {
         username,
         password,
       });
