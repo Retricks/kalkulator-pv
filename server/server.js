@@ -8,7 +8,7 @@ const MySQLStore = require('express-mysql-session')(session);
 const { check, validationResult } = require('express-validator');
 
 const app = express();
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT;
 
 const pool = mysql.createPool({
   host: process.env.DB_HOST,
@@ -19,6 +19,16 @@ const pool = mysql.createPool({
   connectionLimit: 10,
   queueLimit: 0
 });
+const testDatabaseConnection = async () => {
+  try {
+    const connection = await pool.getConnection();
+    await connection.query('SELECT 1');
+    connection.release();
+    console.log('Połączono z bazą danych.');
+  } catch (error) {
+    console.error('Błąd połączenia z bazą danych:', error.message);
+  }
+};
 
 const sessionStore = new MySQLStore({
   expiration: 86400000,
@@ -176,6 +186,7 @@ async function getData(tableName) {
   return rows;
 }
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   console.log(`Server is running on port ${PORT}`);
+  await testDatabaseConnection();
 });
