@@ -129,7 +129,7 @@ app.post('/api/saveResults', [
   console.log(req.body)
   const sql = 'INSERT INTO Oferty (ImieKlienta, NazwiskoKlienta, Moduly, LiczbaModulow, Falownik, Magazyn, Konstrukcja, Koordynacja, Montaz, RodzajKlienta, Narzut, MocPV, PojemnoscME, SumaNetto, SumaVAT, SumaBrutto, CenaBazowa, SumaNettoKlienta, SumaVatKlienta, SumaBruttoKlienta, Zarobek) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
   const values = [imieKlienta, nazwiskoKlienta, JSON.parse(moduly)?.Model || null, liczbaModulow || null, JSON.parse(falowniki).Model, JSON.parse(magazyny)?.Model || null, JSON.parse(konstrukcje)?.Rodzaj || null, JSON.parse(koordynacja).Firma, JSON.parse(montaz).Firma, rodzajKlienta, narzut, mocPV || null, pojemnoscME, sumaNetto, sumaVat, sumaBrutto, cenaBazowa, sumaNettoKlienta, sumaVatKlienta, sumaBruttoKlienta, zarobek];
-
+  console.log(values)
   pool.query(sql, values, (err, result) => {
     if (err) {
       console.error('Error saving results:', err);
