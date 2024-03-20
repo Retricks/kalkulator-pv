@@ -166,7 +166,7 @@ function App() {
     narzut,
     rodzajKlienta,
   }) => {
-    if (!moduly || !liczbaModulow || !falowniki || !konstrukcje || !koordynacja || !montaz || !rodzajKlienta) {
+    if (!falowniki || !konstrukcje || !koordynacja || !montaz || !rodzajKlienta) {
       setSelectedOptions(prevState => ({
         ...prevState,
         sumaNetto: '',
@@ -180,6 +180,7 @@ function App() {
         pojemnoscME: ''
       }));
     }
+    
     const cenaModulu = parseFloat(JSON.parse(moduly).Cena);
     const cenaFalownika = parseFloat(JSON.parse(falowniki).Cena);
     const cenaKonstrukcji = parseFloat(JSON.parse(konstrukcje).Cena);
@@ -190,15 +191,20 @@ function App() {
     const narzutBazowy = isPermissionAccess ? 1 : 1.25;
 
     const iloscModulow = parseInt(liczbaModulow);
-    const mocPVH = (JSON.parse(moduly).Moc * iloscModulow / 1000);
+      let mocPVH;
+    if (moduly){
+      mocPVH = (JSON.parse(moduly).Moc * iloscModulow / 1000);
+    }
+    let sumaNettoH;
+    let sumaBruttoH;
+    if(moduly){
+      sumaNettoH = cenaModulu * iloscModulow +
+                       cenaFalownika +
+                       cenaKonstrukcji * iloscModulow +
+                       cenaMontazu * mocPVH +
+                       cenaKoordynacji * mocPVH;
 
-    let sumaNettoH = cenaModulu * iloscModulow +
-                     cenaFalownika +
-                     cenaKonstrukcji * iloscModulow +
-                     cenaMontazu * mocPVH +
-                     cenaKoordynacji * mocPVH;
-
-    let sumaBruttoH = cenaModulu * iloscModulow * 1.23 +
+    sumaBruttoH = cenaModulu * iloscModulow * 1.23 +
                       cenaFalownika * 1.23 +
                       cenaKonstrukcji * iloscModulow * 1.23 +
                       cenaMontazu * mocPVH * (1 + vat) +
@@ -209,6 +215,20 @@ function App() {
       sumaNettoH += cenaMagazynu;
       sumaBruttoH += cenaMagazynu * 1.23;
     }
+  }
+  else{      
+    const cenaMagazynu = parseFloat(JSON.parse(magazyny).Cena);
+    sumaNettoH = cenaMagazynu + cenaFalownika +
+    cenaKonstrukcji * iloscModulow +
+    cenaMontazu * mocPVH +
+    cenaKoordynacji * mocPVH;
+
+    sumaBruttoH = cenaMagazynu * 1.23 + cenaFalownika * 1.23 +
+      cenaKonstrukcji * iloscModulow * 1.23 +
+      cenaMontazu * mocPVH * (1 + vat) +
+      cenaKoordynacji * mocPVH * 1.23;
+
+  }
     const cenaBazowaH = sumaBruttoH*narzutBazowy
     const sumaVatH = cenaBazowaH - sumaNettoH;
     const sumaNettoKlientaH = cenaBazowaH + wysokoscNarzutu;
