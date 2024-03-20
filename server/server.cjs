@@ -8,27 +8,17 @@ const MySQLStore = require('express-mysql-session')(session);
 const { check, validationResult } = require('express-validator');
 
 const app = express();
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 8080;
 
 const pool = mysql.createPool({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
+  host: process.env.DB_HOST || 'sql98.lh.pl',
+  user: process.env.DB_USER || 'serwer198125',
+  password: process.env.DB_PASSWORD || 'Baz@D@n7ch',
+  database: process.env.DB_NAME || 'serwer198125_kalkulator',
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0
 });
-const testDatabaseConnection = async () => {
-  try {
-    const connection = await pool.getConnection();
-    const [rows] = await connection.query('SELECT * FROM users');
-    connection.release();
-    console.log('Rekordy z tabeli users:', rows);
-  } catch (error) {
-    console.error('Błąd pobierania rekordów z tabeli users:', error.message);
-  }
-};
 
 const sessionStore = new MySQLStore({
   expiration: 86400000,
@@ -41,7 +31,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 app.use(session({
-  secret: process.env.SESSION_SECRET,
+  secret: process.env.SESSION_SECRET || 'defaultSecretKey',
   resave: false,
   saveUninitialized: false,
   store: sessionStore,
@@ -104,9 +94,9 @@ app.get('/api/checkSession', (req, res) => {
 });
 
 app.post('/api/register', [
-  check('username').notEmpty(),
-  check('password').notEmpty(),
-  validateInputs
+check('username').notEmpty(),
+check('password').notEmpty(),
+validateInputs
 ], async (req, res) => {
   const { username, password } = req.body;
 
@@ -183,7 +173,6 @@ async function getData(tableName) {
   return rows;
 }
 
-app.listen(PORT, async () => {
+app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
-  await testDatabaseConnection();
 });
