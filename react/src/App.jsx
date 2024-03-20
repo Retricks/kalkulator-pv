@@ -182,7 +182,6 @@ function App() {
     }
     
     const cenaFalownika = parseFloat(JSON.parse(falowniki).Cena);
-    const cenaKonstrukcji = parseFloat(JSON.parse(konstrukcje).Cena);
     const cenaMontazu = parseFloat(JSON.parse(montaz).Cena);
     const cenaKoordynacji = parseFloat(JSON.parse(koordynacja).Cena);
     const wysokoscNarzutu = parseFloat(narzut);
@@ -194,8 +193,9 @@ function App() {
     let sumaNettoH;
     let sumaBruttoH;
     if(moduly){
-      mocPVH = (JSON.parse(moduly).Moc * iloscModulow / 1000);
+      const cenaKonstrukcji = parseFloat(JSON.parse(konstrukcje).Cena);
       const cenaModulu = parseFloat(JSON.parse(moduly).Cena);
+      mocPVH = (JSON.parse(moduly).Moc * iloscModulow / 1000);
       sumaNettoH = cenaModulu * iloscModulow +
                        cenaFalownika +
                        cenaKonstrukcji * iloscModulow +
