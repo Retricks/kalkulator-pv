@@ -43,8 +43,8 @@ const RegisterForm = ({ setIsLoggedIn }) => {
             <label htmlFor="password" className="form__label">Hasło</label>
         </div>
         <div className="form__group field">
-            <input className="form__field" type="password" placeholder="Hasło" name="password" id="password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)}/>
-            <label htmlFor="password" className="form__label">Powtórz hasło</label>
+            <input className="form__field" type="password" placeholder="Hasło" name="confirmPassword" id="confirmPassword" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)}/>
+            <label htmlFor="confirmPassword" className="form__label">Powtórz hasło</label>
         </div>
         <button type="submit">Zarejestruj</button>
       </form>
